@@ -164,9 +164,6 @@ uint32_t vectors[] __attribute__((section(".isr_vectors"))) =
 void reset_handler()
 {
     uint32_t i;
-    
-    // Copia a secao .data para a RAM 
-
     uint32_t size = (uint32_t)&_edata - (uint32_t)&_sdata;
     uint8_t *pDst = (uint8_t*)&_sdata;          // SRAM 
     uint8_t *pSrc = (uint8_t*)&_etext;          // FLASH 
@@ -175,8 +172,6 @@ void reset_handler()
     {
         *pDst++ = *pSrc++;
     }
-
-    // Preenche a secao .bss com zero 
     
     size = (uint32_t)&_ebss - (uint32_t)&_sbss;
     pDst = (uint8_t*)&_sbss;
@@ -186,10 +181,9 @@ void reset_handler()
         *pDst++ =0;
     }
 
-    // Chama a funcao main() 
-
     main();
 }
+
 void default_handler(void)
 {
     while(1){};
